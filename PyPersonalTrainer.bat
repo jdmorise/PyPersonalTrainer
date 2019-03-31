@@ -1,0 +1,1 @@
+python PyPersonalTrainer.py -m scan -o ../Ueberblick_2019.xlsx -tf ../Trainingsdaten_2019 -sf ../Trainingsheets_2019
