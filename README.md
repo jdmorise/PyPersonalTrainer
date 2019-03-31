@@ -5,15 +5,38 @@ As the PolarPersonalTrainer Webpage will be shut down by 31.12.2019, older Polar
 The software imports the training data in form HRM and GPX Files, creates training session worksheet for each training, and adds the training to an overview sheet. 
 
 ## Introduction 
+This software aims to provide a similar (of course restricted) functionality as the website PolarPersonalTrainer by creating excel sheets with a similar look as the website. For each training session, an individual excel is created which contains the following information:    
+1. A detailed overview table with
+    1. start date
+    2. start time
+    3. duration
+    4. distance 
+    5. pace
+    6. average heart rate
+    7. maximum heart rate
+    8. Polar running index
+    9. Type of Training
+2. A figure with the heart rate and speed over time
+3. A table with time and percentage in zones of the puls rates
+4. A table with the autolaps of the watch, taken each 1 km 
+5. A table with userlaps, if recorded
 
+The filename of the individual excel sheet is derived from the filenames of the hrm and gpx files. An example can be found under "19010601.xlsx". The data heartrate, pace, speed, and altitude versus time is stored in the same workbook in worksheet 'Data' to be used for further analysis. 
+
+The software then adds the information on the overview table to a separate excel which should give an overview over the yearly training. 
+It contains of a first sheet which gives overview over total duration, total distance, and number of training sessions for each month. 
+The workbook contains for each month a table with the detailed overview table.    
+The software als tries to detect if a training session was of type interval by analyzing variation in heart rate and speed and then adds this information to the worksheet 'Intervals'. An example of the Yearly overview excel workbook can be found under "Overview_2019.xlsx".   
 
 ## Requirements
-Python 3.5.1 or higher
-argparse
-openpyxl
-gpxpy
-geopy
-datetime
+The software was tested with training data from a Polar RC3 GPS with HRM version 1.06.   
+
+Python 3.5.1 or higher   
+argparse   
+openpyxl   
+gpxpy   
+geopy   
+datetime   
 
 ## Usage 
 ```
