@@ -36,7 +36,9 @@ class gpx_d:
         gpx_file = open(gpx_filename,'r')
         gpx = gpxpy.parse(gpx_file)
         self.data = gpx.tracks[0].segments[0].points
-        
+        for i in range(len(self.data)):
+            self.data[i].time = self.data[i].time.replace(tzinfo=None)
+
     def calc_distance(self): 
         self.alt_dif = [0]
         self.time_dif = [0]
