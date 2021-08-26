@@ -40,8 +40,8 @@ class trd_oview_xlswriter(trd_xlswriter):
         super(trd_oview_xlswriter,self).__init__(self.xlsx_filename)
 
         self.my_tr = my_training
-        self.months = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
-        self.weekdays = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So' ]
+        self.months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+        self.weekdays = ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa', 'Do' ]
 
         if(os.path.exists(self.xlsx_filename)):
             
@@ -63,11 +63,11 @@ class trd_oview_xlswriter(trd_xlswriter):
         # Überblickssheet
         
         self.ws = self.wb.active
-        self.ws.title = "Überblick"
-        self.ws['A1'] = 'Monat' 
-        self.ws['B1'] = 'Strecke' 
-        self.ws['C1'] = 'Dauer' 
-        self.ws['D1'] = 'Trainingseinheiten'
+        self.ws.title = "General"
+        self.ws['A1'] = 'Mess' 
+        self.ws['B1'] = 'Trayecto' 
+        self.ws['C1'] = 'Duración' 
+        self.ws['D1'] = 'Sesión de entrenamiento'
         
         for i in range(12): 
             month_s = self.months[i]
@@ -89,18 +89,18 @@ class trd_oview_xlswriter(trd_xlswriter):
     # Intervalle
     def create_interval_sheet(self): 
         self.ws = self.wb.create_sheet('Intervalle')
-        self.ws['A1'] = 'Datum'
-        self.ws['B1'] = 'Uhrzeit' 
-        self.ws['C1'] = 'Tag'
-        self.ws['D1'] = 'Intervalle'
-        self.ws['E1'] = 'Dist Avg'
-        self.ws['F1'] = 'Zeit Avg'
-        self.ws['G1'] = 'Pace Avg'
+        self.ws['A1'] = 'Datos'
+        self.ws['B1'] = 'Tiempo' 
+        self.ws['C1'] = 'Etiqueta'
+        self.ws['D1'] = 'Intervalos'
+        self.ws['E1'] = 'Distancia media'
+        self.ws['F1'] = 'Duración media'
+        self.ws['G1'] = 'Velocidad media'
 
         for i in range(10): 
-            self.ws.cell(row=1, column=8+3*i).value = ('Dist #' + str(i))
-            self.ws.cell(row=1, column=8+3*i+1).value = ('Zeit #' + str(i))
-            self.ws.cell(row=1, column=8+3*i+2).value = ('Pace #' + str(i))
+            self.ws.cell(row=1, column=8+3*i).value = ('Distancia #' + str(i))
+            self.ws.cell(row=1, column=8+3*i+1).value = ('Duración #' + str(i))
+            self.ws.cell(row=1, column=8+3*i+2).value = ('Velocidad #' + str(i))
 
         # Header of Laps
         self.ws.column_dimensions["A"].width = 13.0
@@ -120,16 +120,16 @@ class trd_oview_xlswriter(trd_xlswriter):
         for i in range(12): 
             self.ws = self.wb.create_sheet(self.months[i])
 
-            self.ws['A1'] = 'Datum'
-            self.ws['B1'] = 'Uhrzeit' 
-            self.ws['C1'] = 'Tag'
-            self.ws['D1'] = 'Dauer'
-            self.ws['E1'] = 'Puls Avg'
-            self.ws['F1'] = 'Puls Max'
-            self.ws['G1'] = 'Distanz'
-            self.ws['H1'] = 'Pace'
-            self.ws['I1'] = 'Running Index'
-            self.ws['J1'] = 'Training'
+            self.ws['A1'] = 'Datos'
+            self.ws['B1'] = 'Tiempo' 
+            self.ws['C1'] = 'Etiqueta'
+            self.ws['D1'] = 'Duración'
+            self.ws['E1'] = 'Pulsaciones Medias'
+            self.ws['F1'] = 'Pulsaciones Máximas'
+            self.ws['G1'] = 'Distancia'
+            self.ws['H1'] = 'Velocidad'
+            self.ws['I1'] = 'Índice de carrera'
+            self.ws['J1'] = 'Entrenamiento'
             
             self.format_header(1, 1, 10, 1)
 
@@ -170,7 +170,7 @@ class trd_oview_xlswriter(trd_xlswriter):
                 t = dt1 - dt0 
                 sum_dur += t.total_seconds()
 
-        self.ws = self.wb['Überblick'] 
+        self.ws = self.wb['General'] 
         self.ws.cell(column=2, row = dt_t.month+1).value = sum_len
         self.ws.cell(column=4, row = dt_t.month+1).value = training_no
         sum_dur_dt = datetime.datetime.fromtimestamp(sum_dur+ts1)
@@ -266,7 +266,7 @@ class trd_oview_xlswriter(trd_xlswriter):
             data_row.append('{0:02d}'.format(floor(int_dur_s/60)) + ':' + '{0:02d}'.format(int_dur_s%60))
             data_row.append('{0:02d}'.format(floor(int_pace_s)) + ':' + '{0:02d}'.format(floor(int_pace_s%1*60)))
 
-        self.ws = self.wb['Intervalle']
+        self.ws = self.wb['Intervalos']
         
         if(self.ws.max_row == 1): 
             style_row = self.append_row(data_row)
@@ -317,7 +317,7 @@ class trd_oview_xlswriter(trd_xlswriter):
         self.update_months_row()
         self.update_oview_sheet() 
         #print(self.my_tr.trtype)
-        if(self.my_tr.trtype == 'Intervalle'): 
+        if(self.my_tr.trtype == 'Intervalos'): 
             self.update_intervals_sheet()
     
         
