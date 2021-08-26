@@ -79,11 +79,13 @@ class training_d:
         #if((np_hr_hist[4]>0.1) & (0.68*MaxHR < AvgHR < 0.90*MaxHR)):
         #    self.trtype = 'Intervalle'
         if (AvgHR > (0.90*MaxHR)): 
-            self.trtype = 'Wettkampf'
+            self.trtype = 'Competición'
         elif (AvgHR > (0.84*MaxHR)): 
-            self.trtype = 'TDL'
+            self.trtype = 'Entrenamiento'
         elif (AvgHR > (0.75*MaxHR)): 
-            self.trtype = 'GA2'
+            self.trtype = 'Recuperación'
+        elif (AvgHR > (0.50*MaxHR)): 
+            self.trtype = 'Ruta del colesterol'
         # elif (AvgHR > (0.85*MaxHR)): 
         #     self.trtype = 'GA1'
         
@@ -145,7 +147,7 @@ class training_d:
         sum_hrmin = sum(hr_avg < 0.79*MaxHR for hr_avg in self.userlaps.hr_avg)  
         
         if ((sum_hrmax > 2) & (sum_hrmin >= sum_hrmax)):  
-            self.trtype = 'Intervalle'
+            self.trtype = 'Intervalos'
             intlaps_idx = []
             for userlap_idx_s in self.userlaps_idx:
                 idx_s = self.userlaps_idx.index(userlap_idx_s)

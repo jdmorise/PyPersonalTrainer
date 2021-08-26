@@ -115,6 +115,7 @@ def print_license():
     # print(' ') 
     # print(' (C) 2019, jdmorise@yahoo.com')
     print(' ')
+    print(' Traducción realizada al español por Luis Zurita Herrera')
     print(' This program is free software: you can redistribute it and/or modify')
     print(' it under the terms of the GNU General Public License as published by')
     print(' the Free Software Foundation, either version 3 of the License, or')

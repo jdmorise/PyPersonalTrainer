@@ -46,7 +46,7 @@ class trd_session_xlswriter(trd_xlswriter):
         
         self.wb = Workbook()
         self.ws = self.wb.active
-        self.ws.title = "Überblick"
+        self.ws.title = "General"
         
         # Location of HRZones
         self.hrzones_col = 14
@@ -66,12 +66,12 @@ class trd_session_xlswriter(trd_xlswriter):
 
         my_row = 2
         ts1 = 82800
-        self.ws1 = self.wb.create_sheet("Data")
-        self.ws1['A1'] = 'sec'
+        self.ws1 = self.wb.create_sheet("Datos")
+        self.ws1['A1'] = 'Segundos'
         #self.ws1['B1'] = 'Time'
-        self.ws1['C1'] = 'HR'
-        self.ws1['D1'] = 'Speed'
-        self.ws1['E1'] = 'Pace'
+        self.ws1['C1'] = 'Pulsaciones'
+        self.ws1['D1'] = 'Velocidad'
+        self.ws1['E1'] = 'Paso'
         self.ws1['F1'] = 'Alt'
         hrm_length = len(self.mytr.hrm_d.pace_u)
         for i in range(hrm_length):
@@ -88,10 +88,10 @@ class trd_session_xlswriter(trd_xlswriter):
     ## Insert Overview 
     
     def write_overview(self):
-        self.ws['A1'] = 'Datum'
+        self.ws['A1'] = 'Datos'
         self.ws['A2'] = self.mytr.hrm_d.Start_Date.strftime('%d.%m.%Y')
 
-        self.ws['C1'] = 'Dauer'
+        self.ws['C1'] = 'Duración'
         
         dur_h = self.mytr.hrm_d.Length_dt.tm_hour
         dur_m = self.mytr.hrm_d.Length_dt.tm_min
@@ -99,25 +99,25 @@ class trd_session_xlswriter(trd_xlswriter):
         
         self.ws['C2'] = '{0:02d}'.format(dur_h) + ':' + '{0:02d}'.format(dur_m) + ':' + '{0:02d}'.format(dur_s)
 
-        self.ws['B1'] = 'Uhrzeit' 
+        self.ws['B1'] = 'Hora' 
         self.ws['B2'] = self.mytr.hrm_d.Start_Date.strftime("%H:%M:%S")
 
-        self.ws['F1'] = 'Puls Avg'
+        self.ws['F1'] = 'Pulsaciones medias'
         self.ws['F2'] = int(round(mean(self.mytr.hrm_d.hr),0))
 
-        self.ws['G1'] = 'Puls Max'
+        self.ws['G1'] = 'Pulsaciones máximas'
         self.ws['G2'] = max(self.mytr.hrm_d.hr)
 
-        self.ws['D1'] = 'Distanz'
+        self.ws['D1'] = 'Distancia'
         self.ws['D2'] = int(self.mytr.gpx_d.dist_geod_no_alt[-1])/1000
 
-        self.ws['E1'] = 'Pace'
+        self.ws['E1'] = 'Paso'
         self.ws['E2'] = '{0:02d}'.format(int(floor(self.mytr.gpx_d.pace))) + ':' + '{0:02d}'.format(int((self.mytr.gpx_d.pace*60)%60)) 
 
-        self.ws['H1'] = 'Running Index'
+        self.ws['H1'] = 'Índice de carrera'
         self.ws['H2'] = self.mytr.hrm_d.RunningIndex
 
-        self.ws['I1'] = 'Training'
+        self.ws['I1'] = 'Entrenamiento'
         self.ws['I2'] = self.mytr.trtype
 
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -130,12 +130,12 @@ class trd_session_xlswriter(trd_xlswriter):
         #self.no_autolaps = len(self.mytr.autolaps.idx)
         self.ws.merge_cells(start_row=my_row-2, start_column=my_col, end_row=my_row-2, end_column=my_col+5)  
         self.ws.cell(row=my_row-2, column = my_col, value='Autolaps')
-        self.ws.cell(row=my_row-1, column = my_col, value='Runde')
-        self.ws.cell(row=my_row-1, column = my_col+1, value='Distanz')
-        self.ws.cell(row=my_row-1, column = my_col+2, value='Dauer')
-        self.ws.cell(row=my_row-1, column = my_col+3, value='Pace')
-        self.ws.cell(row=my_row-1, column = my_col+4, value='Puls Avg')
-        self.ws.cell(row=my_row-1, column = my_col+5, value='Puls Max')
+        self.ws.cell(row=my_row-1, column = my_col, value='Carrera')
+        self.ws.cell(row=my_row-1, column = my_col+1, value='Distancia')
+        self.ws.cell(row=my_row-1, column = my_col+2, value='Duración')
+        self.ws.cell(row=my_row-1, column = my_col+3, value='Paso')
+        self.ws.cell(row=my_row-1, column = my_col+4, value='Pulsaciones medias')
+        self.ws.cell(row=my_row-1, column = my_col+5, value='Pulsaciones máximas')
         
         for i in range(self.no_autolaps):
             self.ws.cell(row=my_row+i, column=my_col, value = i+1)
@@ -158,13 +158,13 @@ class trd_session_xlswriter(trd_xlswriter):
         
         #Runden Einfügen
         self.ws.merge_cells(start_row=my_row-2, start_column=my_col, end_row=my_row-2, end_column=my_col+5)
-        self.ws.cell(row=my_row-2, column = my_col, value='Userlaps')
-        self.ws.cell(row=my_row-1, column = my_col, value='Runde')
-        self.ws.cell(row=my_row-1, column = my_col+1, value='Distanz')
-        self.ws.cell(row=my_row-1, column = my_col+2, value='Dauer')
-        self.ws.cell(row=my_row-1, column = my_col+3, value='Pace')
-        self.ws.cell(row=my_row-1, column = my_col+4, value='Puls Avg')
-        self.ws.cell(row=my_row-1, column = my_col+5, value='Puls Max')
+        self.ws.cell(row=my_row-2, column = my_col, value='Vueltas')
+        self.ws.cell(row=my_row-1, column = my_col, value='Ronda')
+        self.ws.cell(row=my_row-1, column = my_col+1, value='Distancia')
+        self.ws.cell(row=my_row-1, column = my_col+2, value='Duración')
+        self.ws.cell(row=my_row-1, column = my_col+3, value='Paso')
+        self.ws.cell(row=my_row-1, column = my_col+4, value='Pulsaciones medias')
+        self.ws.cell(row=my_row-1, column = my_col+5, value='Pulsaciones máximas')
         for i in range(self.no_userlaps):
             self.ws.cell(row=my_row+i, column=my_col, value = i+1)
             self.ws.cell(row=my_row+i, column=my_col+2, value = '{0:02d}'.format(floor(self.mytr.userlaps.dur[i]/60)) + ':' + '{0:02d}'.format(int(self.mytr.userlaps.dur[i]%60)))
@@ -197,10 +197,10 @@ class trd_session_xlswriter(trd_xlswriter):
         # Write Header
         # self.ws.merge_cells(start_row=my_row-2, start_column=my_col, end_row=my_row-2, end_column=my_col+1)
         self.ws.merge_cells(start_row=my_row-1, start_column=my_col, end_row=my_row-1, end_column=my_col+3)
-        self.ws.cell(column=my_col, row=my_row-1).value = 'Pulszonen'
-        self.ws.cell(column=my_col, row=my_row).value = 'Zone'
+        self.ws.cell(column=my_col, row=my_row-1).value = 'Zonas de esfuero'
+        self.ws.cell(column=my_col, row=my_row).value = 'Zona'
         self.ws.cell(column=my_col+2, row=my_row).value = '%'
-        self.ws.cell(column=my_col+3, row=my_row).value = 'Zeit'
+        self.ws.cell(column=my_col+3, row=my_row).value = 'Duración'
         
         # Write HRzones Data
         for i in range(6): 
@@ -288,8 +288,8 @@ class trd_session_xlswriter(trd_xlswriter):
         c1 = ScatterChart()
         #c1.title = ""
         c1.style = 13
-        c1.y_axis.title = 'Puls (bpm)'
-        c1.x_axis.title = 'Zeit'
+        c1.y_axis.title = 'Pulsaciones (bpm)'
+        c1.x_axis.title = 'Duración'
         c1.y_axis.title.tx.rich.p[0].r[0].rPr = CharacterProperties(sz=1200)
         c1.x_axis.title.tx.rich.p[0].r[0].rPr = CharacterProperties(sz=1200)
 
@@ -305,7 +305,7 @@ class trd_session_xlswriter(trd_xlswriter):
         # Second Chart: Speed
         c2 = ScatterChart()
 
-        c2.y_axis.title = 'Speed (km/h)'
+        c2.y_axis.title = 'Velocidad (km/h)'
         c2.y_axis.title.tx.rich.p[0].r[0].rPr = CharacterProperties(sz=1200)
 
 
